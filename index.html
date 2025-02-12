@@ -3,57 +3,1549 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Refresh Time Watchlist</title>
+  <title>Combined HTML</title>
   <style>
-    /* Basic styling for the navigation bar */
-    nav {
-      background-color: #f4f4f4;
-      padding: 10px;
-      border-bottom: 1px solid #ccc;
-    }
-    nav ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      gap: 20px;
-    }
-    nav ul li {
-      display: inline;
-    }
-    nav ul li a {
-      text-decoration: none;
-      color: #333;
-      font-weight: bold;
-    }
-    nav ul li a:hover {
-      color: #007BFF;
-    }
-
-    /* Styling for the main content */
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
+      margin: 20px;
       padding: 0;
+      background-color: #f4f4f9;
     }
-    main {
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
       padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+    .container.active {
+      display: block;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .input-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .input-group label {
+      flex: 1;
+      font-weight: bold;
+    }
+    .input-group input[type="number"] {
+      width: 50px;
+      padding: 5px;
+      text-align: center;
+      margin: 0 10px;
+    }
+    .input-group button {
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .toggle-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .toggle-group label {
+      margin-right: 10px;
+    }
+    .total {
+      margin-top: 20px;
+      font-size: 1.2em;
+      text-align: center;
+      font-weight: bold;
+      color: #007BFF;
+    }
+    .section-title {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    .player-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .player-name {
+      font-weight: bold;
+      color: #007BFF;
+      width: 150px;
+    }
+    .ovr {
+      font-weight: bold;
+      color: #28a745;
+      width: 50px;
+      text-align: center;
+    }
+    .pos {
+      color: #ffc107;
+      width: 50px;
+      text-align: center;
+    }
+    .alt-pos {
+      width: 100px;
+      text-align: center;
+    }
+    .shards {
+      font-weight: bold;
+      color: #dc3545;
+      width: 70px;
+      text-align: center;
+    }
+    .search-box {
+      margin-bottom: 20px;
+    }
+    .search-box input, .search-box select {
+      padding: 10px;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .search-box button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+    .search-box button:hover {
+      background-color: #0056b3;
+    }
+    .available-shards {
+      margin-bottom: 20px;
+    }
+    .available-shards input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .remaining-shards {
+      font-size: 1.2em;
+      color: #dc3545;
+      font-weight: bold;
+    }
+    .sort-box {
+      margin-bottom: 20px;
+    }
+    .sort-box select {
+      padding: 10px;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .input-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .result-container {
+      margin-top: 20px;
+    }
+    .toggle {
+      margin-top: 10px;
+    }
+    .hidden {
+      display: none;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+    .modal-buttons {
+      margin-top: 10px;
+    }
+    .player-entry {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .timer {
+      font-weight: bold;
+      color: #333;
+    }
+    input[type="text"], input[type="time"], input[type="url"] {
+      padding: 5px;
+      margin-right: 10px;
+    }
+    button {
+      padding: 5px 10px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    a {
+      text-decoration: none;
+      color: #007BFF;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .remove-btn {
+      background-color: #dc3545;
+      margin-left: 10px;
+    }
+    .remove-btn:hover {
+      background-color: #a71d2a;
+    }
+    .nav {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .nav a {
+      margin: 0 10px;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+    .nav a:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <!-- Navigation Menu -->
-  <nav>
-    <ul>
-      <li><a href="index.html">Refresh Time Watchlist</a></li>
-      <li><a href="shards.html">TOTY Shards Calculator</a></li>
-    </ul>
-  </nav>
+  <div class="nav">
+    <a href="#" onclick="showSection('shards-calculator')">Shards Calculator</a>
+    <a href="#" onclick="showSection('player-pick')">Player Pick</a>
+    <a href="#" onclick="showSection('formation-ovr')">Formation OVR</a>
+    <a href="#" onclick="showSection('refresh-watch')">Refresh Watchlist</a>
+  </div>
 
-  <!-- Main Content -->
-  <main>
+  <div id="shards-calculator" class="container active">
+    <h1>TOTY Shards Calculator</h1>
+    <div class="input-group">
+      <label>98-99 OVR:</label>
+      <button onclick="updateValue('ovr98_99', -1)">-</button>
+      <input type="number" id="ovr98_99" value="0" min="0" readonly>
+      <button onclick="updateValue('ovr98_99', 1)">+</button>
+    </div>
+    <div class="input-group">
+      <label>100-102 OVR:</label>
+      <button onclick="updateValue('ovr100_102', -1)">-</button>
+      <input type="number" id="ovr100_102" value="0" min="0" readonly>
+      <button onclick="updateValue('ovr100_102', 1)">+</button>
+    </div>
+    <div class="input-group">
+      <label>103 OVR:</label>
+      <button onclick="updateValue('ovr103', -1)">-</button>
+      <input type="number" id="ovr103" value="0" min="0" readonly>
+      <button onclick="updateValue('ovr103', 1)">+</button>
+    </div>
+    <div class="input-group">
+      <label>104 OVR:</label>
+      <button onclick="updateValue('ovr104', -1)">-</button>
+      <input type="number" id="ovr104" value="0" min="0" readonly>
+      <button onclick="updateValue('ovr104', 1)">+</button>
+    </div>
+    <div class="input-group">
+      <label>105 OVR:</label>
+      <button onclick="updateValue('ovr105', -1)">-</button>
+      <input type="number" id="ovr105" value="0" min="0" readonly>
+      <button onclick="updateValue('ovr105', 1)">+</button>
+    </div>
+    <div class="input-group">
+      <label>106 OVR:</label>
+      <button onclick="updateValue('ovr106', -1)">-</button>
+      <input type="number" id="ovr106" value="0" min="0" readonly>
+      <button onclick="updateValue('ovr106', 1)">+</button>
+    </div>
+    <div class="input-group">
+      <label>107 OVR:</label>
+      <button onclick="updateValue('ovr107', -1)">-</button>
+      <input type="number" id="ovr107" value="0" min="0" readonly>
+      <button onclick="updateValue('ovr107', 1)">+</button>
+    </div>
+    <div class="input-group">
+      <label>Others:</label>
+      <input type="number" id="others" value="0" min="0" oninput="saveData()">
+    </div>
+    <div class="input-group">
+      <label>Daily Pack:</label>
+      <input type="number" id="dailyPack" value="0" min="0" oninput="saveData()">
+      <label><input type="checkbox" id="dailyPackToggle" onchange="saveData()"> Include Daily Pack</label>
+    </div>
+    <div class="toggle-group">
+      <label>Milestone Rewards (150 Shards):</label>
+      <input type="checkbox" id="milestoneRewards" onchange="saveData()">
+    </div>
+    <div class="toggle-group">
+      <label>UTOTY Milestone Rewards (200 Shards):</label>
+      <input type="checkbox" id="utotyMilestoneRewards" onchange="saveData()">
+    </div>
+    <div class="toggle-group">
+      <label>Extra Rewards (50 Shards):</label>
+      <input type="checkbox" id="extraRewards" onchange="saveData()">
+    </div>
+    <div class="toggle-group">
+      <label>Star Pass Rewards (50 Shards):</label>
+      <input type="checkbox" id="starPassRewards" onchange="saveData()">
+    </div>
+    <div class="toggle-group">
+      <label>Thuram (-750 Shards):</label>
+      <input type="checkbox" id="thuram" onchange="saveData()">
+    </div>
+    <div class="toggle-group">
+      <label>Bale (-1000 Shards):</label>
+      <input type="checkbox" id="bale" onchange="saveData()">
+    </div>
+    <div class="toggle-group">
+      <label>Rivaldo (-180 Shards):</label>
+      <input type="checkbox" id="rivaldo" onchange="saveData()">
+    </div>
+    <div class="toggle-group">
+      <label>Witsel (-60 Shards):</label>
+      <input type="checkbox" id="witsel" onchange="saveData()">
+    </div>
+    <div class="toggle-group">
+      <label>Saka (-60 Shards):</label>
+      <input type="checkbox" id="saka" onchange="saveData()">
+    </div>
+    <div class="total" id="totalShards">Total Shards: 0</div>
+  </div>
+
+  <div id="player-pick" class="container">
+    <div class="box available-shards">
+      <label for="availableShards">Available Shards:</label>
+      <input type="number" id="availableShards" placeholder="Enter available shards">
+      <div class="remaining-shards">Remaining Shards: <span id="remainingShards">0</span></div>
+    </div>
+
+    <div class="box search-box">
+      <input type="text" id="searchPlayer" placeholder="Search Player">
+      <select id="searchOVR">
+        <option value="">OVR</option>
+        <option value="103-103">103</option>
+        <option value="104-104">104</option>
+        <option value="105-105">105</option>
+        <option value="106-106">106</option>
+        <option value="107-107">107</option>
+        <option value="103-104">103-104</option>
+        <option value="103-105">103-105</option>
+        <option value="103-106">103-106</option>
+        <option value="103-107">103-107</option>
+        <option value="104-105">104-105</option>
+        <option value="104-106">104-106</option>
+        <option value="104-107">104-107</option>
+        <option value="105-106">105-106</option>
+        <option value="105-107">105-107</option>
+        <option value="106-107">106-107</option>
+      </select>
+      <select id="searchPos">
+        <option value="">Pos</option>
+        <option value="GK">GK</option>
+        <option value="CB">CB</option>
+        <option value="LB">LB</option>
+        <option value="RB">RB</option>
+        <option value="CDM">CDM</option>
+        <option value="CM">CM</option>
+        <option value="CAM">CAM</option>
+        <option value="RM">RM</option>
+        <option value="LM">LM</option>
+        <option value="RW">RW</option>
+        <option value="LW">LW</option>
+        <option value="ST">ST</option>
+      </select>
+      <select id="searchAltPos">
+        <option value="">Alt Pos</option>
+        <option value="GK">GK</option>
+        <option value="CB">CB</option>
+        <option value="LB">LB</option>
+        <option value="RB">RB</option>
+        <option value="CDM">CDM</option>
+        <option value="CM">CM</option>
+        <option value="CAM">CAM</option>
+        <option value="RM">RM</option>
+        <option value="LM">LM</option>
+        <option value="RW">RW</option>
+        <option value="LW">LW</option>
+        <option value="ST">ST</option>
+      </select>
+      <select id="searchShards">
+        <option value="">Shards</option>
+        <option value="100">100</option>
+        <option value="200">200</option>
+        <option value="300">300</option>
+        <option value="500">500</option>
+        <option value="600">600</option>
+        <option value="750">750</option>
+        <option value="800">800</option>
+        <option value="1000">1000</option>
+        <option value="1500">1500</option>
+      </select>
+      <button onclick="searchPlayers()">Search</button>
+    </div>
+
+    <div class="box sort-box">
+      <select id="sortBy">
+        <option value="">Sort By</option>
+        <option value="ovr-asc">OVR (Ascending)</option>
+        <option value="ovr-desc">OVR (Descending)</option>
+        <option value="shards-asc">Shards (Ascending)</option>
+        <option value="shards-desc">Shards (Descending)</option>
+        <option value="pos-asc">Position (Ascending)</option>
+        <option value="pos-desc">Position (Descending)</option>
+        <option value="altPos-asc">Alt Position (Ascending)</option>
+        <option value="altPos-desc">Alt Position (Descending)</option>
+      </select>
+      <button onclick="sortPlayers()">Sort</button>
+    </div>
+
+    <div class="box">
+      <div class="section-title">Nominee A</div>
+      <div class="player-row">
+        <span class="player-name">L. Yamal</span>
+        <span class="ovr">105</span>
+        <span class="pos">RW</span>
+        <span class="alt-pos">LW</span>
+        <span class="shards">600</span>
+        <input type="checkbox" data-shards="600">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Haaland</span>
+        <span class="ovr">105</span>
+        <span class="pos">ST</span>
+        <span class="alt-pos"></span>
+        <span class="shards">600</span>
+        <input type="checkbox" data-shards="600">
+      </div>
+      <div class="player-row">
+        <span class="player-name">V. Dijk</span>
+        <span class="ovr">105</span>
+        <span class="pos">CB</span>
+        <span class="alt-pos"></span>
+        <span class="shards">600</span>
+        <input type="checkbox" data-shards="600">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Valverde</span>
+        <span class="ovr">105</span>
+        <span class="pos">CM</span>
+        <span class="alt-pos">RM</span>
+        <span class="shards">600</span>
+        <input type="checkbox" data-shards="600">
+      </div>
+      <div class="player-row">
+        <span class="player-name">N. Williams</span>
+        <span class="ovr">104</span>
+        <span class="pos">LW</span>
+        <span class="alt-pos">RM, RW, LM</span>
+        <span class="shards">300</span>
+        <input type="checkbox" data-shards="300">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Rudiger</span>
+        <span class="ovr">104</span>
+        <span class="pos">CB</span>
+        <span class="alt-pos"></span>
+        <span class="shards">300</span>
+        <input type="checkbox" data-shards="300">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Dimarco</span>
+        <span class="ovr">104</span>
+        <span class="pos">LB</span>
+        <span class="alt-pos">LM</span>
+        <span class="shards">200</span>
+        <input type="checkbox" data-shards="200">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Martinez</span>
+        <span class="ovr">104</span>
+        <span class="pos">ST</span>
+        <span class="alt-pos"></span>
+        <span class="shards">200</span>
+        <input type="checkbox" data-shards="200">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Kobel</span>
+        <span class="ovr">103</span>
+        <span class="pos">GK</span>
+        <span class="alt-pos"></span>
+        <span class="shards">200</span>
+        <input type="checkbox" data-shards="200">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Calhanoglu</span>
+        <span class="ovr">103</span>
+        <span class="pos">CDM</span>
+        <span class="alt-pos">CM</span>
+        <span class="shards">100</span>
+        <input type="checkbox" data-shards="100">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Lewandowski</span>
+        <span class="ovr">103</span>
+        <span class="pos">ST</span>
+        <span class="alt-pos"></span>
+        <span class="shards">100</span>
+        <input type="checkbox" data-shards="100">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Musiala</span>
+        <span class="ovr">103</span>
+        <span class="pos">CAM</span>
+        <span class="alt-pos">LM, CM</span>
+        <span class="shards">100</span>
+        <input type="checkbox" data-shards="100">
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="section-title">Nominee B</div>
+      <div class="player-row">
+        <span class="player-name">Mbappe</span>
+        <span class="ovr">105</span>
+        <span class="pos">ST</span>
+        <span class="alt-pos">LW</span>
+        <span class="shards">800</span>
+        <input type="checkbox" data-shards="800">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Bellingham</span>
+        <span class="ovr">105</span>
+        <span class="pos">CAM</span>
+        <span class="alt-pos">CM</span>
+        <span class="shards">600</span>
+        <input type="checkbox" data-shards="600">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Saliba</span>
+        <span class="ovr">105</span>
+        <span class="pos">CB</span>
+        <span class="alt-pos"></span>
+        <span class="shards">300</span>
+        <input type="checkbox" data-shards="300">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Rodri</span>
+        <span class="ovr">105</span>
+        <span class="pos">CDM</span>
+        <span class="alt-pos">CM</span>
+        <span class="shards">300</span>
+        <input type="checkbox" data-shards="300">
+      </div>
+      <div class="player-row">
+        <span class="player-name">C. Ronaldo</span>
+        <span class="ovr">104</span>
+        <span class="pos">ST</span>
+        <span class="alt-pos"></span>
+        <span class="shards">500</span>
+        <input type="checkbox" data-shards="500">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Martinez</span>
+        <span class="ovr">104</span>
+        <span class="pos">GK</span>
+        <span class="alt-pos"></span>
+        <span class="shards">500</span>
+        <input type="checkbox" data-shards="500">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Saka</span>
+        <span class="ovr">104</span>
+        <span class="pos">RW</span>
+        <span class="alt-pos">RM</span>
+        <span class="shards">200</span>
+        <input type="checkbox" data-shards="200">
+      </div>
+      <div class="player-row">
+        <span class="player-name">R. Dias</span>
+        <span class="ovr">104</span>
+        <span class="pos">CB</span>
+        <span class="alt-pos"></span>
+        <span class="shards">200</span>
+        <input type="checkbox" data-shards="200">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Gyokeres</span>
+        <span class="ovr">103</span>
+        <span class="pos">ST</span>
+        <span class="alt-pos">LW</span>
+        <span class="shards">200</span>
+        <input type="checkbox" data-shards="200">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Son</span>
+        <span class="ovr">103</span>
+        <span class="pos">LW</span>
+        <span class="alt-pos">LM, ST</span>
+        <span class="shards">100</span>
+        <input type="checkbox" data-shards="100">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Rice</span>
+        <span class="ovr">103</span>
+        <span class="pos">CDM</span>
+        <span class="alt-pos">CM</span>
+        <span class="shards">100</span>
+        <input type="checkbox" data-shards="100">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Griezmann</span>
+        <span class="ovr">103</span>
+        <span class="pos">CAM</span>
+        <span class="alt-pos">ST</span>
+        <span class="shards">100</span>
+        <input type="checkbox" data-shards="100">
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="section-title">Nominee C</div>
+      <div class="player-row">
+        <span class="player-name">Vini Jr.</span>
+        <span class="ovr">105</span>
+        <span class="pos">LW</span>
+        <span class="alt-pos">ST</span>
+        <span class="shards">600</span>
+        <input type="checkbox" data-shards="600">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Carvajal</span>
+        <span class="ovr">105</span>
+        <span class="pos">RB</span>
+        <span class="alt-pos"></span>
+        <span class="shards">600</span>
+        <input type="checkbox" data-shards="600">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Salah</span>
+        <span class="ovr">105</span>
+        <span class="pos">RW</span>
+        <span class="alt-pos">RM</span>
+        <span class="shards">600</span>
+        <input type="checkbox" data-shards="600">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Wirtz</span>
+        <span class="ovr">105</span>
+        <span class="pos">CAM</span>
+        <span class="alt-pos">LM</span>
+        <span class="shards">600</span>
+        <input type="checkbox" data-shards="600">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Messi</span>
+        <span class="ovr">104</span>
+        <span class="pos">RW</span>
+        <span class="alt-pos">ST, CAM</span>
+        <span class="shards">500</span>
+        <input type="checkbox" data-shards="500">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Hernandez</span>
+        <span class="ovr">104</span>
+        <span class="pos">LB</span>
+        <span class="alt-pos">LM</span>
+        <span class="shards">300</span>
+        <input type="checkbox" data-shards="300">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Palmer</span>
+        <span class="ovr">104</span>
+        <span class="pos">CAM</span>
+        <span class="alt-pos">RM</span>
+        <span class="shards">200</span>
+        <input type="checkbox" data-shards="200">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Kane</span>
+        <span class="ovr">104</span>
+        <span class="pos">ST</span>
+        <span class="alt-pos"></span>
+        <span class="shards">200</span>
+        <input type="checkbox" data-shards="200">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Raphinha</span>
+        <span class="ovr">103</span>
+        <span class="pos">RW</span>
+        <span class="alt-pos">LW, RM</span>
+        <span class="shards">100</span>
+        <input type="checkbox" data-shards="100">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Bastoni</span>
+        <span class="ovr">103</span>
+        <span class="pos">CB</span>
+        <span class="alt-pos"></span>
+        <span class="shards">100</span>
+        <input type="checkbox" data-shards="100">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Lookman</span>
+        <span class="ovr">103</span>
+        <span class="pos">ST</span>
+        <span class="alt-pos"></span>
+        <span class="shards">100</span>
+        <input type="checkbox" data-shards="100">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Xhaka</span>
+        <span class="ovr">103</span>
+        <span class="pos">CM</span>
+        <span class="alt-pos">CDM</span>
+        <span class="shards">100</span>
+        <input type="checkbox" data-shards="100">
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="section-title">TOTY Icons</div>
+      <div class="player-row">
+        <span class="player-name">Ronaldinho</span>
+        <span class="ovr">107</span>
+        <span class="pos">CAM</span>
+        <span class="alt-pos">LW</span>
+        <span class="shards">1000</span>
+        <input type="checkbox" data-shards="1000">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Thuram</span>
+        <span class="ovr">107</span>
+        <span class="pos">CB</span>
+        <span class="alt-pos">RB</span>
+        <span class="shards">750</span>
+        <input type="checkbox" data-shards="750">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Rivaldo</span>
+        <span class="ovr">106</span>
+        <span class="pos">LW</span>
+        <span class="alt-pos">CAM</span>
+        <span class="shards">1000</span>
+        <input type="checkbox" data-shards="1000">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Beckham</span>
+        <span class="ovr">106</span>
+        <span class="pos">CM</span>
+        <span class="alt-pos">RM</span>
+        <span class="shards">1000</span>
+        <input type="checkbox" data-shards="1000">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Makelele</span>
+        <span class="ovr">105</span>
+        <span class="pos">CDM</span>
+        <span class="alt-pos">CM, RM</span>
+        <span class="shards">300</span>
+        <input type="checkbox" data-shards="300">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Desailly</span>
+        <span class="ovr">105</span>
+        <span class="pos">CB</span>
+        <span class="alt-pos">CDM</span>
+        <span class="shards">300</span>
+        <input type="checkbox" data-shards="300">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Maldini</span>
+        <span class="ovr">107</span>
+        <span class="pos">CB</span>
+        <span class="alt-pos">LB</span>
+        <span class="shards">1500</span>
+        <input type="checkbox" data-shards="1500">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Matthaus</span>
+        <span class="ovr">107</span>
+        <span class="pos">CM</span>
+        <span class="alt-pos">CDM, CB</span>
+        <span class="shards">750</span>
+        <input type="checkbox" data-shards="750">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Zambrotta</span>
+        <span class="ovr">106</span>
+        <span class="pos">LB</span>
+        <span class="alt-pos">RB</span>
+        <span class="shards">1000</span>
+        <input type="checkbox" data-shards="1000">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Garrincha</span>
+        <span class="ovr">106</span>
+        <span class="pos">RW</span>
+        <span class="alt-pos">RM</span>
+        <span class="shards">500</span>
+        <input type="checkbox" data-shards="500">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Schweinsteiger</span>
+        <span class="ovr">105</span>
+        <span class="pos">CM</span>
+        <span class="alt-pos">LM</span>
+        <span class="shards">300</span>
+        <input type="checkbox" data-shards="300">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Raul</span>
+        <span class="ovr">105</span>
+        <span class="pos">ST</span>
+        <span class="alt-pos"></span>
+        <span class="shards">300</span>
+        <input type="checkbox" data-shards="300">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Bale</span>
+        <span class="ovr">107</span>
+        <span class="pos">RW</span>
+        <span class="alt-pos">ST, LW</span>
+        <span class="shards">1000</span>
+        <input type="checkbox" data-shards="1000">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Buffon</span>
+        <span class="ovr">107</span>
+        <span class="pos">GK</span>
+        <span class="alt-pos"></span>
+        <span class="shards">750</span>
+        <input type="checkbox" data-shards="750">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Drogba</span>
+        <span class="ovr">106</span>
+        <span class="pos">ST</span>
+        <span class="alt-pos"></span>
+        <span class="shards">500</span>
+        <input type="checkbox" data-shards="500">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Petit</span>
+        <span class="ovr">106</span>
+        <span class="pos">CDM</span>
+        <span class="alt-pos">CM, LB</span>
+        <span class="shards">500</span>
+        <input type="checkbox" data-shards="500">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Zanetti</span>
+        <span class="ovr">105</span>
+        <span class="pos">CM</span>
+        <span class="alt-pos">RB, LB</span>
+        <span class="shards">600</span>
+        <input type="checkbox" data-shards="600">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Gerrard</span>
+        <span class="ovr">105</span>
+        <span class="pos">CAM</span>
+        <span class="alt-pos">CDM, CM</span>
+        <span class="shards">300</span>
+        <input type="checkbox" data-shards="300">
+      </div>
+      <div class="player-row">
+        <span class="player-name">C. Alberto</span>
+        <span class="ovr">107</span>
+        <span class="pos">RB</span>
+        <span class="alt-pos"></span>
+        <span class="shards">1000</span>
+        <input type="checkbox" data-shards="1000">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Cruyff</span>
+        <span class="ovr">107</span>
+        <span class="pos">ST</span>
+        <span class="alt-pos">CAM</span>
+        <span class="shards">1000</span>
+        <input type="checkbox" data-shards="1000">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Eusebio</span>
+        <span class="ovr">106</span>
+        <span class="pos">ST</span>
+        <span class="alt-pos"></span>
+        <span class="shards">1000</span>
+        <input type="checkbox" data-shards="1000">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Eto'o</span>
+        <span class="ovr">106</span>
+        <span class="pos">LW</span>
+        <span class="alt-pos">ST</span>
+        <span class="shards">500</span>
+        <input type="checkbox" data-shards="500">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Vidic</span>
+        <span class="ovr">105</span>
+        <span class="pos">CB</span>
+        <span class="alt-pos"></span>
+        <span class="shards">300</span>
+        <input type="checkbox" data-shards="300">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Riquelme</span>
+        <span class="ovr">105</span>
+        <span class="pos">CAM</span>
+        <span class="alt-pos"></span>
+        <span class="shards">300</span>
+        <input type="checkbox" data-shards="300">
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="section-title">UTOTY & 12TH MAN</div>
+      <div class="player-row">
+        <span class="player-name">Vini Jr.</span>
+        <span class="ovr">107</span>
+        <span class="pos">LW</span>
+        <span class="alt-pos">ST</span>
+        <span class="shards">1500</span>
+        <input type="checkbox" data-shards="1500">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Rodri</span>
+        <span class="ovr">107</span>
+        <span class="pos">CDM</span>
+        <span class="alt-pos">CM</span>
+        <span class="shards">1000</span>
+        <input type="checkbox" data-shards="1000">
+      </div>
+      <div class="player-row">
+        <span class="player-name">V. Dijk</span>
+        <span class="ovr">107</span>
+        <span class="pos">CB</span>
+        <span class="alt-pos"></span>
+        <span class="shards">1000</span>
+        <input type="checkbox" data-shards="1000">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Salah</span>
+        <span class="ovr">107</span>
+        <span class="pos">RW</span>
+        <span class="alt-pos">RM</span>
+        <span class="shards">1000</span>
+        <input type="checkbox" data-shards="1000">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Bellingham</span>
+        <span class="ovr">106</span>
+        <span class="pos">CM</span>
+        <span class="alt-pos">CAM</span>
+        <span class="shards">1000</span>
+        <input type="checkbox" data-shards="1000">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Mbappe</span>
+        <span class="ovr">106</span>
+        <span class="pos">ST</span>
+        <span class="alt-pos">LW</span>
+        <span class="shards">1000</span>
+        <input type="checkbox" data-shards="1000">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Saliba</span>
+        <span class="ovr">106</span>
+        <span class="pos">CB</span>
+        <span class="alt-pos"></span>
+        <span class="shards">800</span>
+        <input type="checkbox" data-shards="800">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Carbajal</span>
+        <span class="ovr">106</span>
+        <span class="pos">RB</span>
+        <span class="alt-pos"></span>
+        <span class="shards">500</span>
+        <input type="checkbox" data-shards="500">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Martinez</span>
+        <span class="ovr">105</span>
+        <span class="pos">GK</span>
+        <span class="alt-pos"></span>
+        <span class="shards">500</span>
+        <input type="checkbox" data-shards="500">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Grimaldo</span>
+        <span class="ovr">105</span>
+        <span class="pos">LB</span>
+        <span class="alt-pos">LM</span>
+        <span class="shards">500</span>
+        <input type="checkbox" data-shards="500">
+      </div>
+      <div class="player-row">
+        <span class="player-name">Palmer</span>
+        <span class="ovr">105</span>
+        <span class="pos">CAM</span>
+        <span class="alt-pos">RM</span>
+        <span class="shards">500</span>
+        <input type="checkbox" data-shards="500">
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="section-title">HONOURABLE MENTIONS</div>
+      <!-- Players will be added here -->
+    </div>
+  </div>
+
+  <div id="formation-ovr" class="container">
+    <h1>Total OVR Calculator</h1>
+    <div class="input-container">
+      <label>GK: <input type="number" id="ovr1"></label>
+      <label>CB-1: <input type="number" id="ovr2"></label>
+      <label>CB-2: <input type="number" id="ovr3"></label>
+      <label>CB-3: <input type="number" id="ovr4"></label>
+      <label>LB: <input type="number" id="ovr5"></label>
+      <label>RB: <input type="number" id="ovr6"></label>
+      <label>LM: <input type="number" id="ovr7"></label>
+      <label>RM: <input type="number" id="ovr8"></label>
+      <label>CDM-1: <input type="number" id="ovr9"></label>
+      <label>CDM-2: <input type="number" id="ovr10"></label>
+      <label>CM-1: <input type="number" id="ovr11"></label>
+      <label>CM-2: <input type="number" id="ovr12"></label>
+      <label>CM-3: <input type="number" id="ovr13"></label>
+      <label>CAM-1: <input type="number" id="ovr14"></label>
+      <label>CAM-2: <input type="number" id="ovr15"></label>
+      <label>CAM-3: <input type="number" id="ovr16"></label>
+      <label>LW: <input type="number" id="ovr17"></label>
+      <label>RW: <input type="number" id="ovr18"></label>
+      <label>ST-1: <input type="number" id="ovr19"></label>
+      <label>ST-2: <input type="number" id="ovr20"></label>
+      <label>CF: <input type="number" id="ovr21"></label>
+    </div>
+    <button onclick="calculate()">Calculate Total OVR</button>
+    <button onclick="resetToDefault()">Reset to Default</button>
+    <button onclick="openSetDefaultModal()">Setting Default</button>
+    <div class="result-container">
+      <h2>Top 5 Formations</h2>
+      <ul id="top-formations"></ul>
+      <div class="toggle">
+        <label>Show All Formations: <input type="checkbox" id="show-all-toggle" onchange="toggleAllFormations()"></label>
+      </div>
+      <ul id="all-formations" class="hidden"></ul>
+    </div>
+
+    <!-- Modal for Setting Default -->
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div class="modal" id="set-default-modal">
+      <h2>Set Default Values</h2>
+      <div class="input-container">
+        <label>GK: <input type="number" id="default-ovr1"></label>
+        <label>CB-1: <input type="number" id="default-ovr2"></label>
+        <label>CB-2: <input type="number" id="default-ovr3"></label>
+        <label>CB-3: <input type="number" id="default-ovr4"></label>
+        <label>LB: <input type="number" id="default-ovr5"></label>
+        <label>RB: <input type="number" id="default-ovr6"></label>
+        <label>LM: <input type="number" id="default-ovr7"></label>
+        <label>RM: <input type="number" id="default-ovr8"></label>
+        <label>CDM-1: <input type="number" id="default-ovr9"></label>
+        <label>CDM-2: <input type="number" id="default-ovr10"></label>
+        <label>CM-1: <input type="number" id="default-ovr11"></label>
+        <label>CM-2: <input type="number" id="default-ovr12"></label>
+        <label>CM-3: <input type="number" id="default-ovr13"></label>
+        <label>CAM-1: <input type="number" id="default-ovr14"></label>
+        <label>CAM-2: <input type="number" id="default-ovr15"></label>
+        <label>CAM-3: <input type="number" id="default-ovr16"></label>
+        <label>LW: <input type="number" id="default-ovr17"></label>
+        <label>RW: <input type="number" id="default-ovr18"></label>
+        <label>ST-1: <input type="number" id="default-ovr19"></label>
+        <label>ST-2: <input type="number" id="default-ovr20"></label>
+        <label>CF: <input type="number" id="default-ovr21"></label>
+      </div>
+      <div class="modal-buttons">
+        <button onclick="saveDefaultValues()">Save Defaults</button>
+        <button onclick="closeSetDefaultModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="refresh-watch" class="container">
     <h1>Refresh Time Watchlist</h1>
-    <button>Add Player</button>
-  </main>
+    <div id="player-list"></div>
+    <div>
+      <input type="text" id="player-name" placeholder="Player Name">
+      <input type="url" id="player-link" placeholder="Status Link">
+      <input type="time" id="refresh-time" step="1">
+      <button onclick="addPlayer()">Add Player</button>
+    </div>
+  </div>
+
+  <script>
+    const shardValues = {
+      ovr98_99: 5,
+      ovr100_102: 10,
+      ovr103: 30,
+      ovr104: 60,
+      ovr105: 120,
+      ovr106: 180,
+      ovr107: 250,
+    };
+
+    function updateValue(id, change) {
+      const input = document.getElementById(id);
+      let value = parseInt(input.value) + change;
+      if (value < 0) value = 0;
+      input.value = value;
+      saveData();
+      calculateTotal();
+    }
+
+    function calculateTotal() {
+      let total = 0;
+
+      for (const [key, value] of Object.entries(shardValues)) {
+        const count = parseInt(document.getElementById(key).value);
+        total += count * value;
+      }
+
+      total += parseInt(document.getElementById('others').value);
+
+      const dailyPackCount = parseInt(document.getElementById('dailyPack').value);
+      if (document.getElementById('dailyPackToggle').checked) {
+        total += dailyPackCount * 10;
+      }
+
+      if (document.getElementById('milestoneRewards').checked) {
+        total += 150;
+      }
+
+      if (document.getElementById('utotyMilestoneRewards').checked) {
+        total += 200;
+      }
+
+      if (document.getElementById('extraRewards').checked) {
+        total += 50;
+      }
+
+      if (document.getElementById('starPassRewards').checked) {
+        total += 50;
+      }
+
+      if (document.getElementById('thuram').checked) {
+        total -= 750;
+      }
+
+      if (document.getElementById('bale').checked) {
+        total -= 1000;
+      }
+
+      if (document.getElementById('rivaldo').checked) {
+        total -= 180;
+      }
+
+      if (document.getElementById('witsel').checked) {
+        total -= 60;
+      }
+
+      if (document.getElementById('saka').checked) {
+        total -= 60;
+      }
+
+      document.getElementById('totalShards').textContent = `Total Shards: ${total}`;
+    }
+
+    function saveData() {
+      const data = {
+        ovr98_99: document.getElementById('ovr98_99').value,
+        ovr100_102: document.getElementById('ovr100_102').value,
+        ovr103: document.getElementById('ovr103').value,
+        ovr104: document.getElementById('ovr104').value,
+        ovr105: document.getElementById('ovr105').value,
+        ovr106: document.getElementById('ovr106').value,
+        ovr107: document.getElementById('ovr107').value,
+        others: document.getElementById('others').value,
+        dailyPack: document.getElementById('dailyPack').value,
+        dailyPackToggle: document.getElementById('dailyPackToggle').checked,
+        milestoneRewards: document.getElementById('milestoneRewards').checked,
+        utotyMilestoneRewards: document.getElementById('utotyMilestoneRewards').checked,
+        extraRewards: document.getElementById('extraRewards').checked,
+        starPassRewards: document.getElementById('starPassRewards').checked,
+        thuram: document.getElementById('thuram').checked,
+        bale: document.getElementById('bale').checked,
+        rivaldo: document.getElementById('rivaldo').checked,
+        witsel: document.getElementById('witsel').checked,
+        saka: document.getElementById('saka').checked,
+      };
+      localStorage.setItem('totyShardsData', JSON.stringify(data));
+      calculateTotal();
+    }
+
+    function loadData() {
+      const savedData = localStorage.getItem('totyShardsData');
+      if (savedData) {
+        const data = JSON.parse(savedData);
+        document.getElementById('ovr98_99').value = data.ovr98_99 || 0;
+        document.getElementById('ovr100_102').value = data.ovr100_102 || 0;
+        document.getElementById('ovr103').value = data.ovr103 || 0;
+        document.getElementById('ovr104').value = data.ovr104 || 0;
+        document.getElementById('ovr105').value = data.ovr105 || 0;
+        document.getElementById('ovr106').value = data.ovr106 || 0;
+        document.getElementById('ovr107').value = data.ovr107 || 0;
+        document.getElementById('others').value = data.others || 0;
+        document.getElementById('dailyPack').value = data.dailyPack || 0;
+        document.getElementById('dailyPackToggle').checked = data.dailyPackToggle || false;
+        document.getElementById('milestoneRewards').checked = data.milestoneRewards || false;
+        document.getElementById('utotyMilestoneRewards').checked = data.utotyMilestoneRewards || false;
+        document.getElementById('extraRewards').checked = data.extraRewards || false;
+        document.getElementById('starPassRewards').checked = data.starPassRewards || false;
+        document.getElementById('thuram').checked = data.thuram || false;
+        document.getElementById('bale').checked = data.bale || false;
+        document.getElementById('rivaldo').checked = data.rivaldo || false;
+        document.getElementById('witsel').checked = data.witsel || false;
+        document.getElementById('saka').checked = data.saka || false;
+      }
+      calculateTotal();
+    }
+
+    window.onload = loadData;
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const availableShardsInput = document.getElementById('availableShards');
+      const remainingShardsSpan = document.getElementById('remainingShards');
+      const checkboxes = document.querySelectorAll('#player-pick input[type="checkbox"]');
+
+      let availableShards = parseInt(availableShardsInput.value) || 0;
+      remainingShardsSpan.textContent = availableShards;
+
+      checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+          const shards = parseInt(this.getAttribute('data-shards'));
+          if (this.checked) {
+            if (availableShards - shards >= 0) {
+              availableShards -= shards;
+            } else {
+              this.checked = false;
+              alert('Not enough shards available!');
+            }
+          } else {
+            availableShards += shards;
+          }
+          remainingShardsSpan.textContent = availableShards;
+          localStorage.setItem('availableShards', availableShards);
+        });
+      });
+
+      availableShardsInput.addEventListener('input', function() {
+        availableShards = parseInt(this.value) || 0;
+        remainingShardsSpan.textContent = availableShards;
+        localStorage.setItem('availableShards', availableShards);
+      });
+
+      if (localStorage.getItem('availableShards')) {
+        availableShards = parseInt(localStorage.getItem('availableShards'));
+        availableShardsInput.value = availableShards;
+        remainingShardsSpan.textContent = availableShards;
+      }
+    });
+
+    function searchPlayers() {
+      const playerName = document.getElementById('searchPlayer').value.toLowerCase();
+      const ovrRange = document.getElementById('searchOVR').value.split('-');
+      const pos = document.getElementById('searchPos').value;
+      const altPos = document.getElementById('searchAltPos').value;
+      const shards = document.getElementById('searchShards').value;
+
+      const playerRows = document.querySelectorAll('.player-row');
+      playerRows.forEach(row => {
+        const playerNameText = row.querySelector('.player-name').textContent.toLowerCase();
+        const ovrText = parseInt(row.querySelector('.ovr').textContent);
+        const posText = row.querySelector('.pos').textContent;
+        const altPosText = row.querySelector('.alt-pos') ? row.querySelector('.alt-pos').textContent : '';
+        const shardsText = row.querySelector('.shards').textContent;
+
+        const matchesPlayerName = playerName ? playerNameText.includes(playerName) : true;
+        const matchesOVR = ovrRange[0] ? ovrText >= ovrRange[0] && ovrText <= ovrRange[1] : true;
+        const matchesPos = pos ? posText === pos : true;
+        const matchesAltPos = altPos ? altPosText.includes(altPos) : true;
+        const matchesShards = shards ? shardsText === shards : true;
+
+        if (matchesPlayerName && matchesOVR && matchesPos && matchesAltPos && matchesShards) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+
+    function sortPlayers() {
+      const sortBy = document.getElementById('sortBy').value;
+      const playerRows = Array.from(document.querySelectorAll('.player-row'));
+      const posOrder = ['GK', 'LB', 'CB', 'RB', 'LM', 'CDM', 'CM', 'CAM', 'RM', 'LW', 'ST', 'RW'];
+
+      playerRows.sort((a, b) => {
+        const ovrA = parseInt(a.querySelector('.ovr').textContent);
+        const ovrB = parseInt(b.querySelector('.ovr').textContent);
+        const shardsA = parseInt(a.querySelector('.shards').textContent);
+        const shardsB = parseInt(b.querySelector('.shards').textContent);
+        const posA = a.querySelector('.pos').textContent;
+        const posB = b.querySelector('.pos').textContent;
+        const altPosA = a.querySelector('.alt-pos') ? a.querySelector('.alt-pos').textContent : '';
+        const altPosB = b.querySelector('.alt-pos') ? b.querySelector('.alt-pos').textContent : '';
+
+        if (sortBy === 'ovr-asc') {
+          return ovrA - ovrB;
+        } else if (sortBy === 'ovr-desc') {
+          return ovrB - ovrA;
+        } else if (sortBy === 'shards-asc') {
+          return shardsA - shardsB;
+        } else if (sortBy === 'shards-desc') {
+          return shardsB - shardsA;
+        } else if (sortBy === 'pos-asc') {
+          return posOrder.indexOf(posA) - posOrder.indexOf(posB);
+        } else if (sortBy === 'pos-desc') {
+          return posOrder.indexOf(posB) - posOrder.indexOf(posA);
+        } else if (sortBy === 'altPos-asc') {
+          return posOrder.indexOf(altPosA) - posOrder.indexOf(altPosB);
+        } else if (sortBy === 'altPos-desc') {
+          return posOrder.indexOf(altPosB) - posOrder.indexOf(altPosA);
+        }
+      });
+
+      const container = document.querySelector('.container');
+      playerRows.forEach(row => container.appendChild(row));
+    }
+
+    const formations = [
+      { name: "4-3-3 Attack", players: [1, 2, 3, 5, 6, 11, 12, 14, 17, 18, 19] },
+      { name: "4-3-3", players: [1, 2, 3, 5, 6, 11, 12, 13, 17, 18, 19] },
+      { name: "4-5-1", players: [1, 2, 3, 5, 6, 7, 8, 11, 14, 15, 19] },
+      { name: "4-1-2-1-2 Wide", players: [1, 2, 3, 5, 6, 7, 8, 9, 14, 19, 20] },
+      { name: "4-2-4", players: [1, 2, 3, 5, 6, 11, 12, 17, 18, 19, 20] },
+      { name: "4-3-3 Defend", players: [1, 2, 3, 5, 6, 9, 10, 11, 17, 18, 19] },
+      { name: "4-3-3 False 9", players: [1, 2, 3, 5, 6, 9, 11, 12, 17, 18, 21] },
+      { name: "4-2-3-1 Narrow", players: [1, 2, 3, 5, 6, 9, 10, 14, 15, 16, 19] },
+      { name: "4-5-1 Flat", players: [1, 2, 3, 5, 6, 7, 8, 11, 12, 13, 19] },
+      { name: "4-3-3 Holding", players: [1, 2, 3, 5, 6, 9, 11, 12, 17, 18, 19] },
+      { name: "4-2-2-2", players: [1, 2, 3, 5, 6, 9, 10, 14, 15, 19, 20] },
+      { name: "4-2-3-1 Wide", players: [1, 2, 3, 5, 6, 7, 8, 9, 10, 14, 19] },
+      { name: "4-3-1-2", players: [1, 2, 3, 5, 6, 11, 12, 13, 14, 19, 20] },
+      { name: "4-1-2-1-2 Narrow", players: [1, 2, 3, 5, 6, 9, 11, 12, 14, 19, 20] },
+      { name: "5-2-2-1", players: [1, 2, 3, 4, 5, 6, 11, 12, 17, 18, 19] },
+      { name: "5-2-1-2", players: [1, 2, 3, 4, 5, 6, 11, 12, 14, 19, 20] },
+      { name: "4-1-4-1", players: [1, 2, 3, 5, 6, 7, 8, 9, 11, 12, 19] },
+      { name: "5-3-2", players: [1, 2, 3, 4, 5, 6, 11, 12, 13, 19, 20] },
+      { name: "4-4-2", players: [1, 2, 3, 5, 6, 7, 8, 11, 12, 19, 20] },
+      { name: "3-4-3 Flat", players: [1, 2, 3, 4, 7, 8, 11, 12, 17, 18, 19] },
+      { name: "3-4-3 Diamond", players: [1, 2, 3, 4, 7, 8, 9, 14, 17, 18, 19] },
+      { name: "4-4-2 Holding", players: [1, 2, 3, 5, 6, 7, 8, 9, 10, 19, 20] },
+      { name: "4-4-1-1 Attack", players: [1, 2, 3, 5, 6, 7, 8, 11, 12, 19, 21] },
+      { name: "3-4-1-2", players: [1, 2, 3, 4, 7, 8, 11, 12, 14, 19, 20] },
+      { name: "5-4-1", players: [1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 19] },
+      { name: "3-5-1-1", players: [1, 2, 3, 4, 7, 8, 9, 10, 11, 19, 21] },
+      { name: "3-5-2", players: [1, 2, 3, 4, 7, 8, 9, 10, 14, 19, 20] }
+    ];
+
+    function loadFromLocalStorage() {
+      for (let i = 1; i <= 21; i++) {
+        const value = localStorage.getItem(`ovr${i}`);
+        if (value !== null) {
+          document.getElementById(`ovr${i}`).value = value;
+        }
+      }
+    }
+
+    function saveToLocalStorage() {
+      for (let i = 1; i <= 21; i++) {
+        const input = document.getElementById(`ovr${i}`);
+        localStorage.setItem(`ovr${i}`, input.value);
+      }
+    }
+
+    function calculate() {
+      saveToLocalStorage();
+      const ovr = Array.from({ length: 21 }, (_, i) => +document.getElementById(`ovr${i + 1}`).value || 0);
+
+      const results = formations.map(formation => {
+        const totalOVR = formation.players.reduce((sum, idx) => sum + ovr[idx - 1], 0);
+        return { name: formation.name, totalOVR };
+      });
+
+      results.sort((a, b) => b.totalOVR - a.totalOVR);
+
+      const topFormationsList = document.getElementById("top-formations");
+      topFormationsList.innerHTML = results.slice(0, 5).map(r => `<li>${r.name}: ${r.totalOVR}</li>`).join("");
+
+      const allFormationsList = document.getElementById("all-formations");
+      allFormationsList.innerHTML = results.map(r => `<li>${r.name}: ${r.totalOVR}</li>`).join("");
+    }
+
+    function toggleAllFormations() {
+      const allFormations = document.getElementById("all-formations");
+      allFormations.classList.toggle("hidden");
+    }
+
+    function resetToDefault() {
+      const defaultValues = JSON.parse(localStorage.getItem("defaultValues")) || {};
+      for (let i = 1; i <= 21; i++) {
+        const defaultValue = defaultValues[`ovr${i}`] || "";
+        document.getElementById(`ovr${i}`).value = defaultValue;
+      }
+      saveToLocalStorage();
+    }
+
+    function openSetDefaultModal() {
+      const modal = document.getElementById("set-default-modal");
+      const overlay = document.getElementById("modal-overlay");
+      modal.style.display = "block";
+      overlay.style.display = "block";
+
+      const defaultValues = JSON.parse(localStorage.getItem("defaultValues")) || {};
+      for (let i = 1; i <= 21; i++) {
+        const defaultValue = defaultValues[`ovr${i}`] || "";
+        document.getElementById(`default-ovr${i}`).value = defaultValue;
+      }
+    }
+
+    function closeSetDefaultModal() {
+      const modal = document.getElementById("set-default-modal");
+      const overlay = document.getElementById("modal-overlay");
+      modal.style.display = "none";
+      overlay.style.display = "none";
+    }
+
+    function saveDefaultValues() {
+      const defaultValues = {};
+      for (let i = 1; i <= 21; i++) {
+        defaultValues[`ovr${i}`] = document.getElementById(`default-ovr${i}`).value;
+      }
+      localStorage.setItem("defaultValues", JSON.stringify(defaultValues));
+      closeSetDefaultModal();
+    }
+
+    // Load saved data on page load
+    window.onload = loadFromLocalStorage;
+
+    const playerList = document.getElementById('player-list');
+    let players = JSON.parse(localStorage.getItem('players')) || [];
+
+    function savePlayersToLocalStorage() {
+      localStorage.setItem('players', JSON.stringify(players));
+    }
+
+    function addPlayer() {
+      const playerName = document.getElementById('player-name').value.trim();
+      const playerLink = document.getElementById('player-link').value.trim();
+      const refreshTimeInput = document.getElementById('refresh-time').value;
+
+      if (!playerName || !playerLink || !refreshTimeInput) {
+        alert("Please enter player name, status link, and refresh time.");
+        return;
+      }
+
+      const [hours, minutes, seconds] = refreshTimeInput.split(':').map(Number);
+      const now = new Date();
+      let refreshTime = new Date(now);
+      refreshTime.setHours(hours, minutes, seconds, 0);
+
+      // If the entered time is earlier than current time, set it for the next day.
+      if (refreshTime <= now) {
+        refreshTime.setDate(refreshTime.getDate() + 1);
+      }
+
+      players.push({
+        name: playerName,
+        link: playerLink,
+        refreshTime: refreshTime.toISOString() // Store as ISO string for consistency
+      });
+
+      savePlayersToLocalStorage();
+      updatePlayerList();
+      document.getElementById('player-name').value = '';
+      document.getElementById('player-link').value = '';
+      document.getElementById('refresh-time').value = '';
+    }
+
+    function removePlayer(index) {
+      players.splice(index, 1); // Remove the player at the specified index
+      savePlayersToLocalStorage();
+      updatePlayerList();
+    }
+
+    function updatePlayerList() {
+      playerList.innerHTML = '';
+      const now = new Date();
+
+      players.forEach((player, index) => {
+        let nextRefresh = new Date(player.refreshTime);
+
+        // Update refresh time if it's passed
+        while (nextRefresh <= now) {
+          nextRefresh.setHours(nextRefresh.getHours() + 2);
+        }
+
+        const timeDifference = nextRefresh - now;
+        const timerString = formatTimeDifference(timeDifference);
+
+        const playerDiv = document.createElement('div');
+        playerDiv.className = 'player-entry';
+        playerDiv.innerHTML = `
+          <span><a href="${player.link}" target="_blank">${player.name}</a></span>
+          <span class="timer">${timerString} → ${formatTime(nextRefresh)}</span>
+          <button class="remove-btn" onclick="removePlayer(\\${index})">Remove</button>
+        `;
+        playerList.appendChild(playerDiv);
+
+        // Update the player's refresh time in the array
+        players[index].refreshTime = nextRefresh.toISOString(); // Save as ISO string
+      });
+
+      savePlayersToLocalStorage();
+      setTimeout(updatePlayerList, 1000); // Refresh every second
+    }
+
+    function formatTime(date) {
+      return date.toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+
+    function formatTimeDifference(ms) {
+      const totalSeconds = Math.floor(ms / 1000);
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    // Initialize the update loop
+    updatePlayerList();
+
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll('.container');
+      sections.forEach(section => {
+        section.classList.remove('active');
+      });
+      document.getElementById(sectionId).classList.add('active');
+    }
+  </script>
 </body>
 </html>
