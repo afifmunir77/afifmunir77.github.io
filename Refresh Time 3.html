@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Refresh Time Watchlist</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+    }
+    .player-entry {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .timer {
+      font-weight: bold;
+      color: #333;
+    }
+    input[type="text"], input[type="time"], input[type="url"] {
+      padding: 5px;
+      margin-right: 10px;
+    }
+    button {
+      padding: 5px 10px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    a {
+      text-decoration: none;
+      color: #007BFF;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .remove-btn {
+      background-color: #dc3545;
+      margin-left: 10px;
+    }
+    .remove-btn:hover {
+      background-color: #a71d2a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Refresh Time Watchlist</h1>
+    <div id="player-list"></div>
+    <div>
+      <input type="text" id="player-name" placeholder="Player Name">
+      <input type="url" id="player-link" placeholder="Status Link">
+      <input type="time" id="refresh-time" step="1">
+      <button onclick="addPlayer()">Add Player</button>
+    </div>
+  </div>
+
+  <script>
+    const playerList = document.getElementById('player-list');
+    let players = JSON.parse(localStorage.getItem('players')) || [];
+
+    function savePlayersToLocalStorage() {
+      localStorage.setItem('players', JSON.stringify(players));
+    }
+
+    function addPlayer() {
+      const playerName = document.getElementById('player-name').value.trim();
+      const playerLink = document.getElementById('player-link').value.trim();
+      const refreshTimeInput = document.getElementById('refresh-time').value;
+
+      if (!playerName || !playerLink || !refreshTimeInput) {
+        alert("Please enter player name, status link, and refresh time.");
+        return;
+      }
+
+      const [hours, minutes, seconds] = refreshTimeInput.split(':').map(Number);
+      const now = new Date();
+      let refreshTime = new Date(now);
+      refreshTime.setHours(hours, minutes, seconds, 0);
+
+      // If the entered time is earlier than current time, set it for the next day.
+      if (refreshTime <= now) {
+        refreshTime.setDate(refreshTime.getDate() + 1);
+      }
+
+      players.push({
+        name: playerName,
+        link: playerLink,
+        refreshTime: refreshTime.toISOString() // Store as ISO string for consistency
+      });
+
+      savePlayersToLocalStorage();
+      updatePlayerList();
+      document.getElementById('player-name').value = '';
+      document.getElementById('player-link').value = '';
+      document.getElementById('refresh-time').value = '';
+    }
+
+    function removePlayer(index) {
+      players.splice(index, 1); // Remove the player at the specified index
+      savePlayersToLocalStorage();
+      updatePlayerList();
+    }
+
+    function updatePlayerList() {
+      playerList.innerHTML = '';
+      const now = new Date();
+
+      players.forEach((player, index) => {
+        let nextRefresh = new Date(player.refreshTime);
+
+        // Update refresh time if it's passed
+        while (nextRefresh <= now) {
+          nextRefresh.setHours(nextRefresh.getHours() + 2);
+        }
+
+        const timeDifference = nextRefresh - now;
+        const timerString = formatTimeDifference(timeDifference);
+
+        const playerDiv = document.createElement('div');
+        playerDiv.className = 'player-entry';
+        playerDiv.innerHTML = `
+          <span><a href="${player.link}" target="_blank">${player.name}</a></span>
+          <span class="timer">${timerString} → ${formatTime(nextRefresh)}</span>
+          <button class="remove-btn" onclick="removePlayer(${index})">Remove</button>
+        `;
+        playerList.appendChild(playerDiv);
+
+        // Update the player's refresh time in the array
+        players[index].refreshTime = nextRefresh.toISOString(); // Save as ISO string
+      });
+
+      savePlayersToLocalStorage();
+      setTimeout(updatePlayerList, 1000); // Refresh every second
+    }
+
+    function formatTime(date) {
+      return date.toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+
+    function formatTimeDifference(ms) {
+      const totalSeconds = Math.floor(ms / 1000);
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    // Initialize the update loop
+    updatePlayerList();
+  </script>
+</body>
+</html>
