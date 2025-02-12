@@ -5,283 +5,198 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TOTY Shards Calculator</title>
   <style>
+    /* Basic styling for the navigation bar */
+    nav {
+      background-color: #f4f4f4;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 20px;
+    }
+    nav ul li {
+      display: inline;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+    nav ul li a:hover {
+      color: #007BFF;
+    }
+
+    /* Styling for the main content */
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
+      margin: 0;
       padding: 0;
-      background-color: #f4f4f9;
     }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      background: white;
+    main {
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    .input-group {
-      display: flex;
-      align-items: center;
+    .shard-section {
       margin-bottom: 15px;
     }
-    .input-group label {
-      flex: 1;
-      font-weight: bold;
-    }
-    .input-group input[type="number"] {
-      width: 50px;
-      padding: 5px;
-      text-align: center;
-      margin: 0 10px;
-    }
-    .input-group button {
-      padding: 5px 10px;
-      cursor: pointer;
-    }
-    .toggle-group {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .toggle-group label {
+    .shard-section label {
       margin-right: 10px;
     }
-    .total {
-      margin-top: 20px;
-      font-size: 1.2em;
-      text-align: center;
+    .shard-section button {
+      margin: 0 5px;
+    }
+    .total-shards {
       font-weight: bold;
-      color: #007BFF;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <!-- Navigation Menu -->
+  <nav>
+    <ul>
+      <li><a href="index.html">Refresh Time Watchlist</a></li>
+      <li><a href="shards.html">TOTY Shards Calculator</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
     <h1>TOTY Shards Calculator</h1>
 
-    <div class="input-group">
+    <!-- Shard Input Sections -->
+    <div class="shard-section">
       <label>98-99 OVR:</label>
-      <button onclick="updateValue('ovr98_99', -1)">-</button>
-      <input type="number" id="ovr98_99" value="0" min="0" readonly>
-      <button onclick="updateValue('ovr98_99', 1)">+</button>
+      <button>-</button>
+      <span>0</span>
+      <button>+</button>
     </div>
-    <div class="input-group">
+    <div class="shard-section">
       <label>100-102 OVR:</label>
-      <button onclick="updateValue('ovr100_102', -1)">-</button>
-      <input type="number" id="ovr100_102" value="0" min="0" readonly>
-      <button onclick="updateValue('ovr100_102', 1)">+</button>
+      <button>-</button>
+      <span>0</span>
+      <button>+</button>
     </div>
-    <div class="input-group">
+    <div class="shard-section">
       <label>103 OVR:</label>
-      <button onclick="updateValue('ovr103', -1)">-</button>
-      <input type="number" id="ovr103" value="0" min="0" readonly>
-      <button onclick="updateValue('ovr103', 1)">+</button>
+      <button>-</button>
+      <span>0</span>
+      <button>+</button>
     </div>
-    <div class="input-group">
+    <div class="shard-section">
       <label>104 OVR:</label>
-      <button onclick="updateValue('ovr104', -1)">-</button>
-      <input type="number" id="ovr104" value="0" min="0" readonly>
-      <button onclick="updateValue('ovr104', 1)">+</button>
+      <button>-</button>
+      <span>0</span>
+      <button>+</button>
     </div>
-    <div class="input-group">
+    <div class="shard-section">
       <label>105 OVR:</label>
-      <button onclick="updateValue('ovr105', -1)">-</button>
-      <input type="number" id="ovr105" value="0" min="0" readonly>
-      <button onclick="updateValue('ovr105', 1)">+</button>
+      <button>-</button>
+      <span>0</span>
+      <button>+</button>
     </div>
-    <div class="input-group">
+    <div class="shard-section">
       <label>106 OVR:</label>
-      <button onclick="updateValue('ovr106', -1)">-</button>
-      <input type="number" id="ovr106" value="0" min="0" readonly>
-      <button onclick="updateValue('ovr106', 1)">+</button>
+      <button>-</button>
+      <span>0</span>
+      <button>+</button>
     </div>
-    <div class="input-group">
+    <div class="shard-section">
       <label>107 OVR:</label>
-      <button onclick="updateValue('ovr107', -1)">-</button>
-      <input type="number" id="ovr107" value="0" min="0" readonly>
-      <button onclick="updateValue('ovr107', 1)">+</button>
+      <button>-</button>
+      <span>0</span>
+      <button>+</button>
     </div>
-    <div class="input-group">
+    <div class="shard-section">
       <label>Others:</label>
-      <input type="number" id="others" value="0" min="0" oninput="saveData()">
+      <button>-</button>
+      <span>0</span>
+      <button>+</button>
     </div>
-    <div class="input-group">
+
+    <!-- Additional Shard Options -->
+    <div class="shard-section">
       <label>Daily Pack:</label>
-      <input type="number" id="dailyPack" value="0" min="0" oninput="saveData()">
-      <label><input type="checkbox" id="dailyPackToggle" onchange="saveData()"> Include Daily Pack</label>
+      <input type="checkbox" id="daily-pack">
+      <label for="daily-pack">Include Daily Pack</label>
     </div>
-    <div class="toggle-group">
+    <div class="shard-section">
       <label>Milestone Rewards (150 Shards):</label>
-      <input type="checkbox" id="milestoneRewards" onchange="saveData()">
+      <input type="checkbox" id="milestone-rewards">
+      <label for="milestone-rewards">Include</label>
     </div>
-    <div class="toggle-group">
+    <div class="shard-section">
       <label>UTOTY Milestone Rewards (200 Shards):</label>
-      <input type="checkbox" id="utotyMilestoneRewards" onchange="saveData()">
+      <input type="checkbox" id="utoty-milestone-rewards">
+      <label for="utoty-milestone-rewards">Include</label>
     </div>
-    <div class="toggle-group">
+    <div class="shard-section">
       <label>Extra Rewards (50 Shards):</label>
-      <input type="checkbox" id="extraRewards" onchange="saveData()">
+      <input type="checkbox" id="extra-rewards">
+      <label for="extra-rewards">Include</label>
     </div>
-    <div class="toggle-group">
+    <div class="shard-section">
       <label>Star Pass Rewards (50 Shards):</label>
-      <input type="checkbox" id="starPassRewards" onchange="saveData()">
+      <input type="checkbox" id="star-pass-rewards">
+      <label for="star-pass-rewards">Include</label>
     </div>
-    <div class="toggle-group">
+
+    <!-- Negative Shard Values -->
+    <div class="shard-section">
       <label>Thuram (-750 Shards):</label>
-      <input type="checkbox" id="thuram" onchange="saveData()">
+      <input type="checkbox" id="thuram">
+      <label for="thuram">Include</label>
     </div>
-    <div class="toggle-group">
+    <div class="shard-section">
       <label>Bale (-1000 Shards):</label>
-      <input type="checkbox" id="bale" onchange="saveData()">
+      <input type="checkbox" id="bale">
+      <label for="bale">Include</label>
     </div>
-    <div class="toggle-group">
+    <div class="shard-section">
       <label>Rivaldo (-180 Shards):</label>
-      <input type="checkbox" id="rivaldo" onchange="saveData()">
+      <input type="checkbox" id="rivaldo">
+      <label for="rivaldo">Include</label>
     </div>
-    <div class="toggle-group">
+    <div class="shard-section">
       <label>Witsel (-60 Shards):</label>
-      <input type="checkbox" id="witsel" onchange="saveData()">
+      <input type="checkbox" id="witsel">
+      <label for="witsel">Include</label>
     </div>
-    <div class="toggle-group">
+    <div class="shard-section">
       <label>Saka (-60 Shards):</label>
-      <input type="checkbox" id="saka" onchange="saveData()">
+      <input type="checkbox" id="saka">
+      <label for="saka">Include</label>
     </div>
 
-    <div class="total" id="totalShards">Total Shards: 0</div>
-  </div>
+    <!-- Total Shards Display -->
+    <div class="total-shards">
+      Total Shards: <span id="total-shards">0</span>
+    </div>
+  </main>
 
+  <!-- JavaScript for Shard Calculation -->
   <script>
-    const shardValues = {
-      ovr98_99: 5,
-      ovr100_102: 10,
-      ovr103: 30,
-      ovr104: 60,
-      ovr105: 120,
-      ovr106: 180,
-      ovr107: 250,
-    };
-
-    function updateValue(id, change) {
-      const input = document.getElementById(id);
-      let value = parseInt(input.value) + change;
-      if (value < 0) value = 0;
-      input.value = value;
-      saveData();
-      calculateTotal();
-    }
-
-    function calculateTotal() {
+    // Function to calculate total shards
+    function calculateTotalShards() {
       let total = 0;
 
-      for (const [key, value] of Object.entries(shardValues)) {
-        const count = parseInt(document.getElementById(key).value);
-        total += count * value;
-      }
-
-      total += parseInt(document.getElementById('others').value);
-
-      const dailyPackCount = parseInt(document.getElementById('dailyPack').value);
-      if (document.getElementById('dailyPackToggle').checked) {
-        total += dailyPackCount * 10;
-      }
-
-      if (document.getElementById('milestoneRewards').checked) {
+      // Add logic for each section here (e.g., buttons, checkboxes)
+      // Example: Checkbox for Milestone Rewards
+      if (document.getElementById('milestone-rewards').checked) {
         total += 150;
       }
 
-      if (document.getElementById('utotyMilestoneRewards').checked) {
-        total += 200;
-      }
-
-      if (document.getElementById('extraRewards').checked) {
-        total += 50;
-      }
-
-      if (document.getElementById('starPassRewards').checked) {
-        total += 50;
-      }
-
-      if (document.getElementById('thuram').checked) {
-        total -= 750;
-      }
-
-      if (document.getElementById('bale').checked) {
-        total -= 1000;
-      }
-
-      if (document.getElementById('rivaldo').checked) {
-        total -= 180;
-      }
-
-      if (document.getElementById('witsel').checked) {
-        total -= 60;
-      }
-
-      if (document.getElementById('saka').checked) {
-        total -= 60;
-      }
-
-      document.getElementById('totalShards').textContent = `Total Shards: ${total}`;
+      // Update the total shards display
+      document.getElementById('total-shards').textContent = total;
     }
 
-    function saveData() {
-      const data = {
-        ovr98_99: document.getElementById('ovr98_99').value,
-        ovr100_102: document.getElementById('ovr100_102').value,
-        ovr103: document.getElementById('ovr103').value,
-        ovr104: document.getElementById('ovr104').value,
-        ovr105: document.getElementById('ovr105').value,
-        ovr106: document.getElementById('ovr106').value,
-        ovr107: document.getElementById('ovr107').value,
-        others: document.getElementById('others').value,
-        dailyPack: document.getElementById('dailyPack').value,
-        dailyPackToggle: document.getElementById('dailyPackToggle').checked,
-        milestoneRewards: document.getElementById('milestoneRewards').checked,
-        utotyMilestoneRewards: document.getElementById('utotyMilestoneRewards').checked,
-        extraRewards: document.getElementById('extraRewards').checked,
-        starPassRewards: document.getElementById('starPassRewards').checked,
-        thuram: document.getElementById('thuram').checked,
-        bale: document.getElementById('bale').checked,
-        rivaldo: document.getElementById('rivaldo').checked,
-        witsel: document.getElementById('witsel').checked,
-        saka: document.getElementById('saka').checked,
-      };
-      localStorage.setItem('totyShardsData', JSON.stringify(data));
-      calculateTotal();
-    }
-
-    function loadData() {
-      const savedData = localStorage.getItem('totyShardsData');
-      if (savedData) {
-        const data = JSON.parse(savedData);
-        document.getElementById('ovr98_99').value = data.ovr98_99 || 0;
-        document.getElementById('ovr100_102').value = data.ovr100_102 || 0;
-        document.getElementById('ovr103').value = data.ovr103 || 0;
-        document.getElementById('ovr104').value = data.ovr104 || 0;
-        document.getElementById('ovr105').value = data.ovr105 || 0;
-        document.getElementById('ovr106').value = data.ovr106 || 0;
-        document.getElementById('ovr107').value = data.ovr107 || 0;
-        document.getElementById('others').value = data.others || 0;
-        document.getElementById('dailyPack').value = data.dailyPack || 0;
-        document.getElementById('dailyPackToggle').checked = data.dailyPackToggle || false;
-        document.getElementById('milestoneRewards').checked = data.milestoneRewards || false;
-        document.getElementById('utotyMilestoneRewards').checked = data.utotyMilestoneRewards || false;
-        document.getElementById('extraRewards').checked = data.extraRewards || false;
-        document.getElementById('starPassRewards').checked = data.starPassRewards || false;
-        document.getElementById('thuram').checked = data.thuram || false;
-        document.getElementById('bale').checked = data.bale || false;
-        document.getElementById('rivaldo').checked = data.rivaldo || false;
-        document.getElementById('witsel').checked = data.witsel || false;
-        document.getElementById('saka').checked = data.saka || false;
-      }
-      calculateTotal();
-    }
-
-    window.onload = loadData;
+    // Attach event listeners to all interactive elements
+    document.querySelectorAll('button, input[type="checkbox"]').forEach(element => {
+      element.addEventListener('click', calculateTotalShards);
+    });
   </script>
 </body>
 </html>
