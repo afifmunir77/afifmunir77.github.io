@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weekly Report Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+    label {
+      margin-right: 10px;
+      min-width: 150px;
+    }
+    .default-reset-buttons {
+      display: flex;
+      gap: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .highlight-yellow {
+      background-color: #ffffcc;
+    }
+    .highlight-green {
+      background-color: #ccffcc;
+    }
+    .highlight-red {
+      background-color: #ffcccc;
+    }
+    .hidden {
+      display: none;
+    }
+    .delete-btn {
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .delete-btn:hover {
+      background-color: #cc0000;
+    }
+    .credit {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1>Weekly Report Generator</h1>
+  <div class="form-group">
+    <label for="crName">CR Name:</label>
+    <input type="text" id="crName" placeholder="Enter CR Name">
+  </div>
+  <div class="form-group">
+    <label for="weekRange">Week Range:</label>
+    <input type="date" id="weekFrom">
+    <input type="date" id="weekTo">
+  </div>
+  <div class="form-group">
+    <label for="batchNo">Batch No:</label>
+    <select id="batchNo">
+      <option value="">Select Batch No</option>
+      <script>
+        for (let i = 48; i <= 60; i++) {
+          document.write(`<option value="${i}">${i}</option>`);
+        }
+      </script>
+    </select>
+    <div class="default-reset-buttons">
+      <button onclick="setDefault('batchNo')">Set as Default</button>
+      <button onclick="resetDefault('batchNo')">Reset</button>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="year">Year:</label>
+    <select id="year">
+      <option value="">Select Year</option>
+      <option value="1st">1st Year</option>
+      <option value="2nd">2nd Year</option>
+      <option value="3rd">3rd Year</option>
+      <option value="4th">4th Year</option>
+      <option value="Masters">Masters</option>
+    </select>
+    <div class="default-reset-buttons">
+      <button onclick="setDefault('year')">Set as Default</button>
+      <button onclick="resetDefault('year')">Reset</button>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="courseCode">Course Code:</label>
+    <select id="courseCode">
+      <option value="">Select Course Code</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="courseTitle">Course Title:</label>
+    <input type="text" id="courseTitle" readonly>
+  </div>
+  <div class="form-group">
+    <label for="teacher">Teacher:</label>
+    <select id="teacher">
+      <option value="">Select Teacher</option>
+      <option value="Md. Shawkat Ali">Md. Shawkat Ali</option>
+      <option value="Muhammad Amzad Hossain">Muhammad Amzad Hossain</option>
+      <option value="Dr. Mohammad Safiqul Islam">Dr. Mohammad Safiqul Islam</option>
+      <option value="Asrarul Islam Chowdhury">Asrarul Islam Chowdhury</option>
+      <option value="Dr. Md. Jahangir Alam">Dr. Md. Jahangir Alam</option>
+      <option value="Laila Hassen">Laila Hassen</option>
+      <option value="Shahamind Neelormi">Shahamind Neelormi</option>
+      <option value="Dr. Mohammad Lutfor Rahman">Dr. Mohammad Lutfor Rahman</option>
+      <option value="Ayesha Siddika">Ayesha Siddika</option>
+      <option value="Dr. Nahid Sultana">Dr. Nahid Sultana</option>
+      <option value="Dr. Amin Masud Ali">Dr. Amin Masud Ali</option>
+      <option value="Dr. Md Shahjahan">Dr. Md Shahjahan</option>
+      <option value="Nusrat Afroz Tania">Nusrat Afroz Tania</option>
+      <option value="Mala Rani Das">Mala Rani Das</option>
+      <option value="Md. Roni Hossain">Md. Roni Hossain</option>
+      <option value="Istihak Rayhan">Istihak Rayhan</option>
+      <option value="Tarana Begum">Tarana Begum</option>
+      <option value="K M Akkas Ali">K M Akkas Ali</option>
+      <option value="Dr. Mahia Mirza">Dr. Mahia Mirza</option>
+      <option value="Md Abdur Rahman Shagor">Md Abdur Rahman Shagor</option>
+    </select>
+    <div class="default-reset-buttons">
+      <button onclick="setDefaultForCourse()">Set as Default</button>
+      <button onclick="resetDefaultForCourse()">Reset</button>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="designatedClasses">Designated Weekly Classes:</label>
+    <select id="designatedClasses">
+      <option value="">Select Classes</option>
+      <script>
+        for (let i = 1; i <= 4; i++) {
+          document.write(`<option value="${i}">${i}</option>`);
+        }
+      </script>
+    </select>
+    <div class="default-reset-buttons">
+      <button onclick="setDefault('designatedClasses')">Set as Default</button>
+      <button onclick="resetDefault('designatedClasses')">Reset</button>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="takenClasses">Taken Weekly Classes:</label>
+    <select id="takenClasses">
+      <option value="">Select Classes</option>
+      <script>
+        for (let i = 0; i <= 5; i++) {
+          document.write(`<option value="${i}">${i}</option>`);
+        }
+      </script>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="sortOrder">Sort Order:</label>
+    <select id="sortOrder">
+      <option value="asc">Ascending (Least to Most)</option>
+      <option value="desc">Descending (Most to Least)</option>
+    </select>
+    <div class="default-reset-buttons">
+      <button onclick="setDefault('sortOrder')">Set as Default</button>
+      <button onclick="resetDefault('sortOrder')">Reset</button>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="conciseVersion">Concise Version:</label>
+    <input type="checkbox" id="conciseVersion">
+  </div>
+  <button onclick="generateReport()">Generate Report</button>
+  <button onclick="resetForm()">Reset</button>
+
+  <table id="reportTable">
+    <thead>
+      <tr>
+        <th class="toggleable">CR Name</th>
+        <th>Week Range</th>
+        <th>Batch No</th>
+        <th>Year</th>
+        <th>Course Code</th>
+        <th class="toggleable">Course Title</th>
+        <th>Teacher</th>
+        <th>Designated Classes</th>
+        <th>Taken Classes</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <div class="credit">
+    Developer: Afif (Econ-48)
+  </div>
+
+  <script>
+    const courseData = {
+      "1st": [
+        { code: "Econ-101", title: "Principles of Economics-A" },
+        { code: "Econ-102", title: "Principles of Economics-B" },
+        { code: "Econ-103", title: "Mathematics for Economics-I" },
+        { code: "Econ-104", title: "Statistics for Economics-I" },
+        { code: "Econ-105", title: "State and Politics" },
+        { code: "Econ-106", title: "English for Economics" },
+        { code: "Econ-107", title: "Computer Operation and Application" }
+      ],
+      "2nd": [
+        { code: "Econ-201", title: "Agricultural Economics and Rural Livelihood" },
+        { code: "Econ-202", title: "Economics of the Public Sector" },
+        { code: "Econ-203", title: "Mathematics for Economics-II" },
+        { code: "Econ-204", title: "Statistics for Economics-II" },
+        { code: "Econ-205", title: "Development Economics" },
+        { code: "Econ-206", title: "Resource and Environmental Economics" },
+        { code: "Econ-207", title: "Bangladesh: History, Society and Culture" }
+      ],
+      "3rd": [
+        { code: "Econ-301", title: "Microeconomic Theory-I" },
+        { code: "Econ-302", title: "Macroeconomic Theory-I" },
+        { code: "Econ-303", title: "International Economics-I" },
+        { code: "Econ-304", title: "Studies on the Bangladesh Economy" },
+        { code: "Econ-305", title: "Urban Economics" },
+        { code: "Econ-306", title: "Econometrics-I" },
+        { code: "Econ-307", title: "Political Economy of Underdevelopment, Gender and Poverty" },
+        { code: "Econ-308", title: "Advanced Mathematical Methods in Economics" }
+      ],
+      "4th": [
+        { code: "Econ-401", title: "Microeconomic Theory-II" },
+        { code: "Econ-402", title: "Macroeconomic Theory-II" },
+        { code: "Econ-403", title: "Econometrics-II" },
+        { code: "Econ-404", title: "Health Economics" },
+        { code: "Econ-405", title: "Historical Studies on Economic Development" },
+        { code: "Econ-406", title: "Money Financial Institutions and Capital Market" },
+        { code: "Econ-407", title: "International Economics-II" },
+        { code: "Econ-408", title: "Economic Thoughts in Perspective" },
+        { code: "Econ-409", title: "Research Methodology and Empirical Studies" },
+        { code: "Econ-410", title: "Term Paper" }
+      ],
+      "Masters": [
+        { code: "Econ-501", title: "Advanced Microeconomic Theory" },
+        { code: "Econ-502", title: "Advanced Macroeconomic Theory" },
+        { code: "Econ-503", title: "Development Economics" },
+        { code: "Econ-504", title: "Econometrics" },
+        { code: "Econ-505", title: "International Economics" },
+        { code: "Econ-506", title: "Environmental Economies" },
+        { code: "Econ-507", title: "Health Economics" },
+        { code: "Econ-508", title: "Money, Banking and Financial Intermediation" },
+        { code: "Econ-509", title: "Economics of Education" },
+        { code: "Econ-510", title: "Labour Economics" },
+        { code: "Econ-511", title: "Urban Economics" },
+        { code: "Econ-512", title: "Political Economy of Globalization" },
+        { code: "Econ-513", title: "Contemporary Economic Thoughts in perspective" },
+        { code: "Econ-514", title: "Socialism" },
+        { code: "Econ-515", title: "Rural Economics" },
+        { code: "Econ-516", title: "Population Studies" },
+        { code: "Econ-517", title: "Economics of Planning" },
+        { code: "Econ-518", title: "Industrial Organization" },
+        { code: "Econ-519", title: "Marxian Economics" },
+        { code: "Econ-520", title: "Information Economics" }
+      ]
+    };
+
+    // Load saved data from local storage
+    document.addEventListener("DOMContentLoaded", () => {
+      const savedData = JSON.parse(localStorage.getItem("weeklyReportData"));
+      if (savedData) {
+        document.getElementById("crName").value = savedData.crName || "";
+        document.getElementById("weekFrom").value = savedData.weekFrom || "";
+        document.getElementById("weekTo").value = savedData.weekTo || "";
+        document.getElementById("batchNo").value = savedData.batchNo || getDefaultValue("batchNo");
+        document.getElementById("year").value = savedData.year || getDefaultValue("year");
+        document.getElementById("courseCode").value = savedData.courseCode || "";
+        document.getElementById("courseTitle").value = savedData.courseTitle || "";
+        document.getElementById("teacher").value = savedData.teacher || getDefaultTeacher(savedData.courseCode);
+        document.getElementById("designatedClasses").value = savedData.designatedClasses || getDefaultValue("designatedClasses");
+        document.getElementById("takenClasses").value = savedData.takenClasses || "";
+        document.getElementById("sortOrder").value = savedData.sortOrder || getDefaultValue("sortOrder");
+        document.getElementById("conciseVersion").checked = savedData.conciseVersion || false;
+
+        toggleConciseVersion(savedData.conciseVersion);
+
+        if (savedData.reportRows) {
+          const reportTableBody = document.querySelector("#reportTable tbody");
+          reportTableBody.innerHTML = "";
+          savedData.reportRows.forEach(rowData => {
+            addRowToTable(rowData);
+          });
+        }
+      } else {
+        loadDefaultValues();
+      }
+    });
+
+    document.getElementById("year").addEventListener("change", function () {
+      const year = this.value;
+      const courseCodeDropdown = document.getElementById("courseCode");
+      courseCodeDropdown.innerHTML = '<option value="">Select Course Code</option>';
+      if (year) {
+        courseData[year].forEach(course => {
+          const option = document.createElement("option");
+          option.value = course.code;
+          option.textContent = course.code;
+          courseCodeDropdown.appendChild(option);
+        });
+      }
+    });
+
+    document.getElementById("courseCode").addEventListener("change", function () {
+      const year = document.getElementById("year").value;
+      const courseCode = this.value;
+      const courseTitleInput = document.getElementById("courseTitle");
+      const teacherDropdown = document.getElementById("teacher");
+
+      if (year && courseCode) {
+        const course = courseData[year].find(c => c.code === courseCode);
+        courseTitleInput.value = course ? course.title : "";
+        teacherDropdown.value = getDefaultTeacher(courseCode);
+      } else {
+        courseTitleInput.value = "";
+        teacherDropdown.value = "";
+      }
+    });
+
+    document.getElementById("conciseVersion").addEventListener("change", function () {
+      toggleConciseVersion(this.checked);
+    });
+
+    function toggleConciseVersion(isConcise) {
+      const toggleableColumns = document.querySelectorAll(".toggleable");
+      toggleableColumns.forEach(column => {
+        column.classList.toggle("hidden", isConcise);
+      });
+    }
+
+    function generateReport() {
+      const crName = document.getElementById("crName").value;
+      const weekFrom = document.getElementById("weekFrom").value;
+      const weekTo = document.getElementById("weekTo").value;
+      const batchNo = document.getElementById("batchNo").value;
+      const year = document.getElementById("year").value;
+      const courseCode = document.getElementById("courseCode").value;
+      const courseTitle = document.getElementById("courseTitle").value;
+      const teacher = document.getElementById("teacher").value;
+      const designatedClasses = parseInt(document.getElementById("designatedClasses").value);
+      const takenClasses = parseInt(document.getElementById("takenClasses").value);
+      const sortOrder = document.getElementById("sortOrder").value;
+      const conciseVersion = document.getElementById("conciseVersion").checked;
+
+      if (!crName || !weekFrom || !weekTo || !batchNo || !year || !courseCode || !courseTitle || !teacher || isNaN(designatedClasses) || isNaN(takenClasses)) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      const status = takenClasses > designatedClasses ? "More" : takenClasses === designatedClasses ? "Exact" : "Less";
+      const rowData = {
+        crName,
+        weekRange: `${weekFrom} to ${weekTo}`,
+        batchNo,
+        year,
+        courseCode,
+        courseTitle,
+        teacher,
+        designatedClasses,
+        takenClasses,
+        status
+      };
+
+      addRowToTable(rowData);
+
+      // Save data to local storage
+      saveDataToLocalStorage();
+    }
+
+    function addRowToTable(rowData) {
+      const reportTableBody = document.querySelector("#reportTable tbody");
+
+      const newRow = document.createElement("tr");
+      newRow.innerHTML = `
+        <td class="toggleable">${rowData.crName}</td>
+        <td>${rowData.weekRange}</td>
+        <td>${rowData.batchNo}</td>
+        <td>${rowData.year}</td>
+        <td>${rowData.courseCode}</td>
+        <td class="toggleable">${rowData.courseTitle}</td>
+        <td>${rowData.teacher}</td>
+        <td>${rowData.designatedClasses}</td>
+        <td>${rowData.takenClasses}</td>
+        <td>${rowData.status}</td>
+        <td><button class="delete-btn" onclick="deleteRow(this)">Delete</button></td>
+      `;
+
+      if (rowData.status === "More") {
+        newRow.classList.add("highlight-yellow");
+      } else if (rowData.status === "Exact") {
+        newRow.classList.add("highlight-green");
+      } else {
+        newRow.classList.add("highlight-red");
+      }
+
+      reportTableBody.appendChild(newRow);
+
+      // Sort the table based on the selected sort order
+      sortTable(document.getElementById("sortOrder").value);
+    }
+
+    function deleteRow(button) {
+      const row = button.closest("tr");
+      row.remove();
+
+      // Save updated data to local storage
+      saveDataToLocalStorage();
+    }
+
+    function resetForm() {
+      document.getElementById("crName").value = "";
+      document.getElementById("weekFrom").value = "";
+      document.getElementById("weekTo").value = "";
+      document.getElementById("batchNo").value = getDefaultValue("batchNo");
+      document.getElementById("year").value = getDefaultValue("year");
+      document.getElementById("courseCode").value = "";
+      document.getElementById("courseTitle").value = "";
+      document.getElementById("teacher").value = "";
+      document.getElementById("designatedClasses").value = getDefaultValue("designatedClasses");
+      document.getElementById("takenClasses").value = "";
+      document.getElementById("sortOrder").value = getDefaultValue("sortOrder");
+      document.getElementById("conciseVersion").checked = false;
+
+      const reportTableBody = document.querySelector("#reportTable tbody");
+      reportTableBody.innerHTML = "";
+
+      localStorage.removeItem("weeklyReportData");
+    }
+
+    function saveDataToLocalStorage() {
+      const reportRows = Array.from(document.querySelectorAll("#reportTable tbody tr")).map(row => {
+        const cells = row.querySelectorAll("td");
+        return {
+          crName: cells[0].textContent,
+          weekRange: cells[1].textContent,
+          batchNo: cells[2].textContent,
+          year: cells[3].textContent,
+          courseCode: cells[4].textContent,
+          courseTitle: cells[5].textContent,
+          teacher: cells[6].textContent,
+          designatedClasses: cells[7].textContent,
+          takenClasses: cells[8].textContent,
+          status: cells[9].textContent
+        };
+      });
+
+      const dataToSave = {
+        crName: document.getElementById("crName").value,
+        weekFrom: document.getElementById("weekFrom").value,
+        weekTo: document.getElementById("weekTo").value,
+        batchNo: document.getElementById("batchNo").value,
+        year: document.getElementById("year").value,
+        courseCode: document.getElementById("courseCode").value,
+        courseTitle: document.getElementById("courseTitle").value,
+        teacher: document.getElementById("teacher").value,
+        designatedClasses: document.getElementById("designatedClasses").value,
+        takenClasses: document.getElementById("takenClasses").value,
+        sortOrder: document.getElementById("sortOrder").value,
+        conciseVersion: document.getElementById("conciseVersion").checked,
+        reportRows
+      };
+
+      localStorage.setItem("weeklyReportData", JSON.stringify(dataToSave));
+    }
+
+    function setDefault(fieldId) {
+      const fieldValue = document.getElementById(fieldId).value;
+      localStorage.setItem(`default_${fieldId}`, fieldValue);
+      alert(`${fieldId} default value set to "${fieldValue}"`);
+    }
+
+    function resetDefault(fieldId) {
+      localStorage.removeItem(`default_${fieldId}`);
+      document.getElementById(fieldId).value = "";
+      alert(`${fieldId} default value reset`);
+    }
+
+    function getDefaultValue(fieldId) {
+      return localStorage.getItem(`default_${fieldId}`) || "";
+    }
+
+    function setDefaultForCourse() {
+      const courseCode = document.getElementById("courseCode").value;
+      const teacher = document.getElementById("teacher").value;
+
+      if (!courseCode || !teacher) {
+        alert("Please select a course and a teacher to set as default.");
+        return;
+      }
+
+      localStorage.setItem(`default_teacher_${courseCode}`, teacher);
+      alert(`Default teacher for ${courseCode} set to "${teacher}"`);
+    }
+
+    function resetDefaultForCourse() {
+      const courseCode = document.getElementById("courseCode").value;
+
+      if (!courseCode) {
+        alert("Please select a course to reset its default teacher.");
+        return;
+      }
+
+      localStorage.removeItem(`default_teacher_${courseCode}`);
+      document.getElementById("teacher").value = "";
+      alert(`Default teacher for ${courseCode} reset`);
+    }
+
+    function getDefaultTeacher(courseCode) {
+      return localStorage.getItem(`default_teacher_${courseCode}`) || "";
+    }
+
+    function loadDefaultValues() {
+      document.getElementById("batchNo").value = getDefaultValue("batchNo");
+      document.getElementById("year").value = getDefaultValue("year");
+      document.getElementById("designatedClasses").value = getDefaultValue("designatedClasses");
+      document.getElementById("sortOrder").value = getDefaultValue("sortOrder");
+    }
+
+    function sortTable(order) {
+      const table = document.getElementById("reportTable");
+      const tbody = table.querySelector("tbody");
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+
+      rows.sort((a, b) => {
+        const aTakenClasses = parseInt(a.querySelector("td:nth-child(9)").textContent);
+        const bTakenClasses = parseInt(b.querySelector("td:nth-child(9)").textContent);
+
+        if (order === "asc") {
+          return aTakenClasses - bTakenClasses;
+        } else {
+          return bTakenClasses - aTakenClasses;
+        }
+      });
+
+      tbody.innerHTML = "";
+      rows.forEach(row => tbody.appendChild(row));
+    }
+  </script>
+</body>
+</html>
